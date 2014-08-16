@@ -1,15 +1,19 @@
-#include <string.h>
-
-#include "pair.h"
+#include "markov.h"
 
 using namespace std;
 
-public char* concat(char* a, char* b)
+public char* Markov::concat(char* a, char* b)
 {
-    char str[strlen(a) + strlen(b)];
-    strcpy(str, a);
-    strcat(str, b);
-    return &str;
+    char* strbuf = (char*)(malloc(sizeof(char) * (strlen(a) + strlen(b)));
+    strcat(strbuf, a);
+    strcat(strbuf, b);
+    return strbuf;
+}
+
+public char* generate(int length)
+{
+    srand(time(NULL));
+    random = rand() % word_map->size();
 }
 
 public int main(int argc, char** argv)
