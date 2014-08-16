@@ -1,24 +1,14 @@
-#include "markov.h"
+#include "markov.hxx"
 
-using namespace std;
-
-char* Markov::concat(char* a, char* b)
+string Markov::next(ifstream input)
 {
-    char* strbuf = (char*)(malloc(sizeof(char) * (strlen(a) + strlen(b)));
-    strcat(strbuf, a);
-    strcat(strbuf, b);
-    return strbuf;
-}
-
-char* Markov::next(ifstream in)
-{
-    char* text;
+    string text;
     char ch;
-    while((in >> ch) != ' ')
+    while((input >> ch) != ' ')
     {
         if(ch == EOF)
             return NULL;
-        text = concat(text, &ch);
+        text += ch;
     }
 
     return text;
@@ -27,9 +17,9 @@ char* Markov::next(ifstream in)
 void Markov::initialize(char* file_name)
 {
     ifstream in(file_name);
-    char* a = next(in), b = next(in), c = next(in);
+    string a = next(in), b = next(in), c = next(in);
     key_pair word_pair;
-    vector<char*> values;
+    vector<string> values;
 
     while(true)
     {
@@ -48,12 +38,12 @@ void Markov::initialize(char* file_name)
     }
 }
 
-char* Markov::generate(int length)
+string Markov::generate(int length)
 {
-    char* text;
+    string text;
     srand(time(NULL));
     rand_pos = rand() % word_map->size();
-    pair<key_pair, vector<char*>> map_array[word_pair.size()];
+    pair<key_pair, vector<char*> > map_array[word_pair.size()];
     int pos = 0;
     for(auto i = begin(word_pair); i != word_map.end(); i++)
     {
@@ -61,16 +51,16 @@ char* Markov::generate(int length)
         pos++;
     }
 
-    char* a = map_array[rand_pos].first,
+    string a = map_array[rand_pos].first,
           b = map_array[rand_pos].second;
 
-    vector<char*> values;
+    vector<string> values;
 
     for(int i = 0; i < length; i++)
     {
         values = word_map.find(key_pair{a, b}).second;
 
-        text = concat(text, a);
+        text += a;
 
         a = b;
         b = values.at(rand() % values.size());
@@ -79,18 +69,7 @@ char* Markov::generate(int length)
     return text;
 }
 
-public int main(int argc, char** argv)
+int main(int argc, char** argv)
 {
-    char* text;
-    char* line;
-    if(argc > 0)
-    {
-        FILE* fp = fopen(argv[0], "r");
-        while(fscanf(fp, "%s", line) != EOF)
-        {
-            concat(text, line);
-        }
-    }
-
     return 0;
 }

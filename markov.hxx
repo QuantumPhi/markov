@@ -1,5 +1,9 @@
-#include <fstream>
+#include <iostream>
+#include <map>
+#include <vector>
 #include <string.h>
+
+using namespace std;
 
 typedef struct
 {
@@ -9,23 +13,18 @@ typedef struct
 class Markov
 {
 protected:
-    map<key_pair, vector<char*>> word_map;
+    map<key_pair, vector<char*> > word_map;
 
     Markov(char* file_name)
     {
-        word_map = new map<key_pair, vector<char*>>;
         initialize(file_name);
     }
 
-    ~Markov()
-    {
-        fclose(fp);
-    }
+    ~Markov() {}
 
-    static char* concat(char* a, char* b);
-    static char* next(ifstream in);
+    static char* next(ifstream input);
     void initialize(char* file_name);
 
 public:
     char* generate(int length);
-}
+};
