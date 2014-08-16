@@ -1,25 +1,31 @@
+#include <fstream>
 #include <string.h>
 
-#include "pair.h"
+typedef struct
+{
+    char* a, b;
+} key_pair;
 
 class Markov
 {
 protected:
+    map<key_pair, vector<char*>> word_map;
+
     Markov(char* file_name)
     {
-        fp = fopen(file_name, "r");
-        word_map = (map<Pair, vector<char*>>*)(malloc(sizeof map<Pair, vector<char*>>));
+        word_map = new map<key_pair, vector<char*>>;
+        initialize(file_name);
     }
 
     ~Markov()
     {
         fclose(fp);
-        delete word_map;
     }
-    FILE* fp;
-    map<Pair, vector<char*>>* word_map;
+
+    static char* concat(char* a, char* b);
+    static char* next(ifstream in);
+    void initialize(char* file_name);
 
 public:
-    char* concat(char* a, char* b);
     char* generate(int length);
 }
